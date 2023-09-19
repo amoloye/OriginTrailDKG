@@ -1,5 +1,5 @@
 import { DoctorService } from './doctor.service';
-import { Doctor } from './shemas/doctor.shema';
+import { Doctor } from './schemas/doctor.schema';
 import { DoctorDto } from './dto/doctor.dto';
 import {
   Body,

@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Doctor } from './shemas/doctor.shema';
+import { Doctor } from './schemas/doctor.schema';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateDoctorDto } from './dto/doctor.dto';
+import { DoctorDto } from './dto/doctor.dto';
 
 @Injectable()
 export class DoctorService {
@@ -21,8 +21,8 @@ export class DoctorService {
   //     return res;
   //   }
 
-  async create(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
-    const res = new this.DoctorModel(createDoctorDto);
+  async create(doctorDto: DoctorDto): Promise<Doctor> {
+    const res = new this.DoctorModel(doctorDto);
     return res.save();
   }
 
@@ -35,10 +35,21 @@ export class DoctorService {
     }
   }
 
-  async updateByLegalCode(legalCode: string, doctor: Doctor): Promise<Doctor> {
-    return await this.DoctorModel.findByIdAndUpdate(legalCode, doctor, {
-      new: true,
-      runValidators: true,
-    });
+  async updateByLegalCode(
+    legalCode: string,
+    doctorDto: DoctorDto,
+  ): Promise<Doctor> {
+    const doctor = await this.DoctorModel.findByIdAndUpdate(
+      legalCode,
+      doctorDto,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+    if (!doctor) {
+      throw new NotFoundException(`Doctor with ID '${legalCode}' not found`);
+    }
+    return doctor;
   }
 }
