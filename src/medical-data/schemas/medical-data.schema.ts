@@ -1,26 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { MedicalDataSensitivitvRule } from 'src/medical-data-sensitivity-rule/schemas/medical-data-sensitivity-rule.schema';
+import { MedicalDataSource } from 'src/medical-data-source/schemas/medical-data-source.schema';
+import { Person } from 'src/person/schemas/person.schema';
 
 @Schema()
-export class MedicalDataSource extends Document {
+export class MedicalData extends Document {
   @Prop()
-  source : MedicalDataSource;
+  source: MedicalDataSource;
 
   @Prop()
-  createdBy : Person;
+  createdBy: Person;
 
   @Prop()
-  classifier : string;
+  classifier: string;
 
   @Prop()
-  value : string;
+  value: string;
+
+  @Prop({ type: Date }) // Changed to Date type
+  ins: Date;
 
   @Prop()
-  ins : Datetime;
-
-  @Prop()
-  sensitivityRule : MedicalDataSensitivitvRule;
+  sensitivityRule: MedicalDataSensitivitvRule;
 }
 
-export const MedicalDataSourceSchema =
-  SchemaFactory.createForClass(MedicalDataSource);
+export const MedicalDataSchema = SchemaFactory.createForClass(MedicalData);
